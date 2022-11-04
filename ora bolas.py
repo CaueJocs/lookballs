@@ -1,8 +1,6 @@
 from math import sqrt
-import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
-
 
 def leitura():
     linhas=[]
@@ -35,7 +33,7 @@ def robo(posirobox,posiroboy):
     bola =leitura()
     posirobo=[]
     intercept=[]
-    acel= 2.8
+    vel= 2.8
     raio= 0.12
 
     posirobo.append(posirobox)
@@ -48,7 +46,7 @@ def robo(posirobox,posiroboy):
 
     for i in range(len(bola)):
         dist =sqrt(((bola[i][0] - posirobo[0])**2) + ((bola[i][1] - posirobo[1])**2))
-        if (dist- raio)/ acel <= temporizador:
+        if (dist- raio)<= temporizador *vel:
             intercept.append( bola[i][0])
             intercept.append( bola[i][1])
             
@@ -123,10 +121,9 @@ def graf1(bolax,bolay,posirobox,posiroboy):
     xrobo = posirobox, bolax[len(bolax)-1]
     yrobo = posiroboy, bolay[len(bolay)-1]
     
-    plt.plot(xbola, ybola, color= "red", label='robo')
-    plt.plot(xrobo,yrobo, color = "blue",label='bola')
-
-    leg = plt.legend(loc='upper center')
+    plt.plot(xbola, ybola, color= "red", label='Bola')
+    plt.plot(xrobo,yrobo, color = "blue",label='Robô')
+    plt.legend(loc='upper center')
     
     plt.title("Gráfico de trajetória do Robô até a Bola")
     plt.xlabel("Eixo X(m)")
@@ -140,22 +137,84 @@ def graf2(posirobox,posiroboy,xintercept, yintercept,temporizador,bolax,bolay,te
     y= posiroboy, yintercept
     time= 0.0 , temporizador
     
-    plt.title("Cordenada X do Robô e Bola em função do Tempo")
-    plt.xlabel("Eixo X(s)")
-    plt.ylabel("Eixo Y(m)")
+    plt.subplot(1,2,1)
     plt.plot(tempo, bolax, color="red")
     plt.plot(time, x, color="blue")
-    plt.show()
+    plt.title("Cordenada X")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Metros (m)")
     
-    plt.title("Coordenada Y do Robô e Bola em função do Tempo")
-    plt.xlabel("Eixo X(s)")
-    plt.ylabel("Eixo Y(m)")
+    plt.subplot(1,2,2)
     plt.plot(tempo, bolay,color='red')
     plt.plot(time, y, color='blue')
+    plt.title("Coordenada Y")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Metros (m)")
+    plt.suptitle("Coordenadas de X e Y Do Robô E Bola em Função Do Tempo")
     plt.show()
     
     #graf2(posirobox, posiroboy, t[5] , t[6], t[3], t[0], t[1], t[4])
 
+def graf3(tempo):
+    velxbola=[]
+    velybola=[]
+    velrobo=[]
+    for i in range(len(tempo)):
+        velxbola.append(((-0.76) *tempo[i]) + 4.1792)
+    for i in range(len(tempo)):
+        velybola.append(((-0.4 *tempo[i] ) +1,8))
+    
+    for i in range(len(tempo)):
+        if tempo[i] < 1:
+            velrobo.append(tempo[i] * 2.8)
+        else:
+            velrobo.append(2.8)
+    
+    plt.subplot(1,2,1)
+    plt.plot(tempo , velxbola,color="blue")
+    plt.plot(tempo, velrobo , color='red')
+    plt.title("Cordenada X")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Velocidade (m/s)")
+    
+    plt.subplot(1,2,2)
+    plt.plot(tempo , velybola,color="blue")
+    plt.plot(tempo, velrobo , color='red')
+    plt.title("Cordenada Y")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Velocidade (m/s)")
+    plt.suptitle("Velocidade em X e Y Do Robô E Bola em Função Do Tempo")
+    
+    plt.show()
+
+def graf4(tempo):
+    acelx= -0.76 , -0.76
+    acely= -0.4 , -0.4
+    chegada= 0 , tempo[(len(tempo) - 1)]
+    velrobo=[]
+    for i in range(len(tempo)):
+        if tempo[i] > 1:
+            velrobo.append(0)
+        else:
+            velrobo.append(2.8)
+    
+    plt.subplot(2,1,1)
+    plt.plot(chegada,acelx,tempo, velrobo, color='blue')
+    plt.plot(tempo, velrobo,color='red')
+    plt.title("Cordenada X")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Aceleração (m/s²)")
+    
+    plt.subplot(2,1,2)
+    plt.plot(chegada,acely,color='blue')
+    plt.plot(tempo, velrobo,color='red')
+    plt.title("Cordenada Y")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel("Aceleração (m/s²)")
+    plt.suptitle("Aceleração em X e Y Do Robô E Bola em Função Do Tempo")
+
+    
+    plt.show()
 
 
 def graf5(posrobo,bola,tempo):
@@ -165,13 +224,12 @@ def graf5(posrobo,bola,tempo):
         distrel.append(dist)
     
     plt.title(" Distância Relativa entre Robo e Bola em função do tempo")
-    plt.xlabel("Eixo X(s)")
-    plt.ylabel("Eixo Y(m)")
+    plt.xlabel("Tempo(s)")
+    plt.ylabel("Distância Relativa (m)")
     
     plt.plot(tempo , distrel)
     plt.show()
     #graf5(t[8], t[7] , t[4])
-
 
 
 def main():
@@ -190,71 +248,63 @@ def main():
     canvas1.create_text(200, 100, text="Digite a posição Y do robô", fill="black", font=('Helvetica 15 bold'))
     canvas1.pack()
     
-    def chamargraf1():  
-        posirobox = float(entry1.get())
-        posiroboy= float(entry2.get())
+    posirobox= int 
+    posiroboy=int
+    
+
+    def chamargraf1(posirobox,posiroboy):  
         t= robo(posirobox,posiroboy)
         graf1(t[0],t[1], posirobox, posiroboy)
         
-    def chamargraf2():
-        posirobox = float(entry1.get())
-        posiroboy= float(entry2.get())
+    def chamargraf2(posirobox,posiroboy):
         t= robo(posirobox,posiroboy)
         graf2(posirobox, posiroboy, t[5] , t[6], t[3], t[0], t[1], t[4])
     
-    def chamargraf5():
-        posirobox = float(entry1.get())
-        posiroboy= float(entry2.get())
+    def chamargraf3(posirobox,posiroboy):
+        t= robo(posirobox,posiroboy)
+        graf3(t[4])
+
+    def chamargraf4(posirobox,posiroboy):
+        t= robo(posirobox,posiroboy)
+        graf4(t[4])
+
+    
+    def chamargraf5(posirobox,posiroboy):
         t= robo(posirobox,posiroboy)
         graf5(t[8], t[7] , t[4])
     
-        
-    button1 = tk.Button(text='Gráfico de Interceptação', command=chamargraf1)
+    def salvar():
+        posirobox = float(entry1.get())
+        posiroboy= float(entry2.get())
+        return [posirobox, posiroboy]
+
+    
+    button1 = tk.Button(text='Gráfico de Interceptação', command= lambda: chamargraf1(posirobox,posiroboy))
     canvas1.create_window(100, 350, window=button1)
     
     button2 = tk.Button(text='Gráfico de Interceptação de XY em T', command=chamargraf2)
     canvas1.create_window(300, 350, window=button2)
     
-    button3 = tk.Button(text='Gráfico de distância relativa entre Robô e Bola', command=chamargraf5)
-    canvas1.create_window(500, 350, window=button3)
+    button3 = tk.Button(text='Gráfico de Velocidade em X e Y do Robô e Bola', command=chamargraf3)
+    canvas1.create_window(550, 350, window=button3)
+
+    button4 = tk.Button(text='Gráfico de Aceleração em X e Y do Robô e Bola', command=chamargraf4)
+    canvas1.create_window(150, 450, window=button4)
+
+    button5 = tk.Button(text='Gráfico de Distância Relativa entre Robô e Bola', command=chamargraf5)
+    canvas1.create_window(450, 450, window=button5)
+
+    button6 = tk.Button(text='Salvar', command=salvar)
+    canvas1.create_window(500, 100, window=button6)
     
 
     root.mainloop()
     
-
+    
 main()
 
 
     
-
-    
-
-
-
-
-
-
-
-            
-
-
-    
-    
-
-        
-
-
-
-    
-
-
-
-
-
-
-
-
-
 
     
 
