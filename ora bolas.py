@@ -161,8 +161,9 @@ def graf3(tempo):
     velrobo=[]
     for i in range(len(tempo)):
         velxbola.append(((-0.76) *tempo[i]) + 4.1792)
+    
     for i in range(len(tempo)):
-        velybola.append(((-0.4 *tempo[i] ) +1,8))
+        velybola.append(((-0.4 *tempo[i] ) +1.8))
     
     for i in range(len(tempo)):
         if tempo[i] < 1:
@@ -178,7 +179,7 @@ def graf3(tempo):
     plt.ylabel("Velocidade (m/s)")
     
     plt.subplot(1,2,2)
-    plt.plot(tempo , velybola,color="blue")
+    plt.plot(tempo , velybola, color="blue")
     plt.plot(tempo, velrobo , color='red')
     plt.title("Cordenada Y")
     plt.xlabel("Tempo (s)")
@@ -229,7 +230,6 @@ def graf5(posrobo,bola,tempo):
     
     plt.plot(tempo , distrel)
     plt.show()
-    #graf5(t[8], t[7] , t[4])
 
 
 def main():
@@ -247,89 +247,81 @@ def main():
     canvas1.create_text(200, 50, text="Digite a posição X do robô", fill="black", font=('Helvetica 15 bold'))
     canvas1.create_text(200, 100, text="Digite a posição Y do robô", fill="black", font=('Helvetica 15 bold'))
     canvas1.pack()
-    
-    posirobox= int 
-    posiroboy=int
-    
 
-    def chamargraf1(posirobox,posiroboy):  
-        t= robo(posirobox,posiroboy)
-        graf1(t[0],t[1], posirobox, posiroboy)
+
+    def chamargraf1(posirobox,posiroboy):
+        if posirobox == 'nada' or posiroboy == 'nada':
+            print("Digite as coordenadas primeiro")   
+        else:
+            t= robo(posirobox,posiroboy)
+            graf1(t[0],t[1], posirobox, posiroboy)
         
     def chamargraf2(posirobox,posiroboy):
-        t= robo(posirobox,posiroboy)
-        graf2(posirobox, posiroboy, t[5] , t[6], t[3], t[0], t[1], t[4])
+        if posirobox == 'nada' or posiroboy == 'nada':
+            print("Digite as coordenadas primeiro")   
+        else:
+            t= robo(posirobox,posiroboy)
+            graf2(posirobox, posiroboy, t[5] , t[6], t[3], t[0], t[1], t[4])
     
     def chamargraf3(posirobox,posiroboy):
-        t= robo(posirobox,posiroboy)
-        graf3(t[4])
+        if posirobox == 'nada' or posiroboy == 'nada':
+            print("Digite as coordenadas primeiro")   
+        else:
+            t= robo(posirobox,posiroboy)
+            graf3(t[4])
 
     def chamargraf4(posirobox,posiroboy):
-        t= robo(posirobox,posiroboy)
-        graf4(t[4])
+        if posirobox == 'nada' or posiroboy == 'nada':
+            print("Digite as coordenadas primeiro")   
+        else:
+            t= robo(posirobox,posiroboy)
+            graf4(t[4])
 
     
     def chamargraf5(posirobox,posiroboy):
-        t= robo(posirobox,posiroboy)
-        graf5(t[8], t[7] , t[4])
+        if posirobox == 'nada' or posiroboy == 'nada':
+            print("Digite as coordenadas primeiro")   
+        else:
+            t= robo(posirobox,posiroboy)
+            graf5(t[8], t[7] , t[4])
     
     def salvar():
         posirobox = float(entry1.get())
-        posiroboy= float(entry2.get())
-        return [posirobox, posiroboy]
-
+        posiroboy= float(entry2.get())        
+        if posirobox >9 or posiroboy>6:
+            print('Inválido')
+        else:
+            global params
+            params=[posiroboy,posirobox]
     
-    button1 = tk.Button(text='Gráfico de Interceptação', command= lambda: chamargraf1(posirobox,posiroboy))
+    def limpar():
+        global params
+        params=['nada','nada']
+
+
+    button1 = tk.Button(text='Gráfico de Interceptação', command=lambda :chamargraf1(params[0],params[1]))
     canvas1.create_window(100, 350, window=button1)
     
-    button2 = tk.Button(text='Gráfico de Interceptação de XY em T', command=chamargraf2)
+    button2 = tk.Button(text='Gráfico de Interceptação de XY em T', command= lambda: chamargraf2(params[0],params[1]))
     canvas1.create_window(300, 350, window=button2)
     
-    button3 = tk.Button(text='Gráfico de Velocidade em X e Y do Robô e Bola', command=chamargraf3)
+    button3 = tk.Button(text='Gráfico de Velocidade em X e Y do Robô e Bola', command=lambda: chamargraf3(params[0],params[1]))
     canvas1.create_window(550, 350, window=button3)
 
-    button4 = tk.Button(text='Gráfico de Aceleração em X e Y do Robô e Bola', command=chamargraf4)
+    button4 = tk.Button(text='Gráfico de Aceleração em X e Y do Robô e Bola', command=lambda: chamargraf4(params[0],params[1]))
     canvas1.create_window(150, 450, window=button4)
 
-    button5 = tk.Button(text='Gráfico de Distância Relativa entre Robô e Bola', command=chamargraf5)
+    button5 = tk.Button(text='Gráfico de Distância Relativa entre Robô e Bola', command=lambda: chamargraf5(params[0],params[1]))
     canvas1.create_window(450, 450, window=button5)
 
     button6 = tk.Button(text='Salvar', command=salvar)
     canvas1.create_window(500, 100, window=button6)
-    
 
+    button7 = tk.Button(text='Resetar', command=limpar)
+    canvas1.create_window(550, 100, window=button7)
+
+    
     root.mainloop()
     
     
 main()
-
-
-    
-
-    
-
-
-
-
-
-
-
-            
-
-
-    
-    
-
-        
-
-
-
-    
-
-
-
-
-
-
-
-
