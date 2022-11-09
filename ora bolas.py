@@ -109,11 +109,16 @@ def robo(posirobox,posiroboy):
     
     velrobox=(intercept[0] - posirobox) / temporizador
     velroboy=(intercept[1] - posiroboy) /temporizador
-    velbolax=(intercept[0])
+    velbolax=(intercept[0] -bola[0][0]) /temporizador
+    velbolay=(intercept[1] -bola[0][1]) /temporizador
  
-    
+    if velroboy <0:
+        velroboy = velroboy*-1
 
-    return [bolax, bolay,pontos,temporizador,tempo,intercept[0],intercept[1],posbola,posrobo]
+    if velrobox <0:
+        velrobox= velrobox*-1
+ 
+    return [bolax, bolay,pontos,temporizador,tempo,intercept[0],intercept[1],posbola,posrobo,velbolax,velbolay,velrobox,velroboy]
 
 
 def graf1(bolax,bolay,posirobox,posiroboy):
@@ -189,6 +194,8 @@ def graf3(tempo):
     
     plt.show()
 
+    return[velxbola[len(velxbola)-1],velybola[len(velybola)-1],velrobo[len(velrobo)-1]]
+
 def graf4(tempo):
     acelx= -0.76 , -0.76
     acely= -0.4 , -0.4
@@ -249,68 +256,69 @@ def main():
     canvas1.create_text(200, 100, text="Digite a posição Y do robô", fill="black", font=('Helvetica 15 bold'))
     canvas1.pack()
 
-    T = tk.Text(root, height = 50, width = 100)
+    T = tk.Text(root, height = 7, width = 90)
+    T.place(relx = 0.5, rely = 0.4, anchor = 'c')
 
     def chamargraf1(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
-            print("Digite as coordenadas primeiro")   
+            T.insert(tk.END,"Digite as coordenadas primeiro ! \n")    
         else:
             t= robo(posirobox,posiroboy)
             graf1(t[0],t[1], posirobox, posiroboy)
         
     def chamargraf2(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
-            print("Digite as coordenadas primeiro")   
+            T.insert(tk.END,"Digite as coordenadas primeiro ! \n")     
         else:
             t= robo(posirobox,posiroboy)
             graf2(posirobox, posiroboy, t[5] , t[6], t[3], t[0], t[1], t[4])
     
     def chamargraf3(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
-            print("Digite as coordenadas primeiro")   
+            T.insert(tk.END,"Digite as coordenadas primeiro ! \n")     
         else:
             t= robo(posirobox,posiroboy)
-            graf3(t[4])
+            j= graf3(t[4])
+            T.insert(tk.END,"Velocidade da bola no instante de interceptação em X= %.2f m/s Y= %.2f m/s \n" %(j[0],j[1]))
+            T.insert(tk.END,"Velocidade do robô no instante de interceptação é de %.2f \n" %j[2])
 
     def chamargraf4(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
-            print("Digite as coordenadas primeiro")   
+            T.insert(tk.END,"Digite as coordenadas primeiro ! \n")     
         else:
             t= robo(posirobox,posiroboy)
             graf4(t[4])
-
-    
+             
+             
     def chamargraf5(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
-            print("Digite as coordenadas primeiro")   
+            T.insert(tk.END,"Digite as coordenadas primeiro ! \n")     
         else:
             t= robo(posirobox,posiroboy)
             graf5(t[8], t[7] , t[4])
     
     def salvar():
         posirobox = float(entry1.get())
-        posiroboy= float(entry2.get())        
+        posiroboy= float(entry2.get())
+        t= robo(posirobox,posiroboy)        
         if posirobox >9 or posiroboy>6:
-            print('Inválido')
+            T.insert(tk.END,"Comandos inválidos ! \n")  
         else:
             global params
             params=[posiroboy,posirobox]
         T.delete('1.0', 'end')
-        T.insert(tk.END,"Oi \n")
-        T.pack()
-
+        T.insert(tk.END,"Informações recebidas ! \n" )
+        T.insert(tk.END,"O robô interceptou a Bola em %.2f segundos \n" %t[3])
+        T.insert(tk.END,"A bola foi interceptada no ponto X= %.2f Y= %.2f \n" %(t[5],t[6]))
+        T.insert(tk.END,"A velocidade média da bola na coordenada X= %.2f m/s e  Y= %.2f m/s \n" %(t[9],t[10]))
+        T.insert(tk.END,"A velocidade média do robô na coordenada X= %.2f m/s e  Y= %.2f m/s \n" %(t[11],t[12]))
+        
     
     def limpar():
         global params
         params=['nada','nada']
         T.delete('1.0', 'end')
-        T.insert(tk.END,"Resetado.")
-        T.pack()
-
-
-
-        
-
+        T.insert(tk.END,"Resetado.")  
 
     button1 = tk.Button(text='Gráfico de Interceptação', command=lambda :chamargraf1(params[0],params[1]))
     canvas1.create_window(100, 350, window=button1)
