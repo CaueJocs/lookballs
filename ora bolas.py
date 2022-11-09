@@ -41,7 +41,6 @@ def robo(posirobox,posiroboy):
 
     temporizador=0
     linha=0
-    distrel=[]
     
 
     for i in range(len(bola)):
@@ -57,8 +56,7 @@ def robo(posirobox,posiroboy):
         else:
             
             temporizador += 0.02
-            
-    
+              
     bolax=[]
     bolay=[]
     posbola=[]
@@ -109,6 +107,9 @@ def robo(posirobox,posiroboy):
         teste.append(posy[linha])
         posrobo.append(teste)
     
+    velrobox=(intercept[0] - posirobox) / temporizador
+    velroboy=(intercept[1] - posiroboy) /temporizador
+    velbolax=(intercept[0])
  
     
 
@@ -248,6 +249,7 @@ def main():
     canvas1.create_text(200, 100, text="Digite a posição Y do robô", fill="black", font=('Helvetica 15 bold'))
     canvas1.pack()
 
+    T = tk.Text(root, height = 50, width = 100)
 
     def chamargraf1(posirobox,posiroboy):
         if posirobox == 'nada' or posiroboy == 'nada':
@@ -293,10 +295,21 @@ def main():
         else:
             global params
             params=[posiroboy,posirobox]
+        T.delete('1.0', 'end')
+        T.insert(tk.END,"Oi \n")
+        T.pack()
+
     
     def limpar():
         global params
         params=['nada','nada']
+        T.delete('1.0', 'end')
+        T.insert(tk.END,"Resetado.")
+        T.pack()
+
+
+
+        
 
 
     button1 = tk.Button(text='Gráfico de Interceptação', command=lambda :chamargraf1(params[0],params[1]))
@@ -320,8 +333,7 @@ def main():
     button7 = tk.Button(text='Resetar', command=limpar)
     canvas1.create_window(550, 100, window=button7)
 
-    
     root.mainloop()
-    
+
     
 main()
